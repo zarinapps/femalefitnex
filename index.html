@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta property="og:title" content="Female Fitness" />
+    <meta property="og:title" content="Female Fitness" />
     <meta property="og:image" content="https://lh3.googleusercontent.com/isDJ4BpvS4AJxF-ZrpA_R0x_NXghNoKxesCtNYS6FBkP5ZQZYSvGTM-d1mepG2K0ePE" />
     <meta property="og:description" content="Your Personal Trainer, Anytime, Anywhere!" />
     <title>Female Fitness - App Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -103,15 +104,78 @@
         }
 
         .screenshots {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            display: flex;
             gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
         }
 
         .screenshots img {
-            width: 100%;
+            width: 150px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .screenshots img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .modal .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ff3a97;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal .close:hover {
+            color: #04b371;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff3a97;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .arrow:hover {
+            color: #04b371;
+        }
+
+        .left-arrow {
+            left: 20px;
+        }
+
+        .right-arrow {
+            right: 20px;
         }
 
         footer {
@@ -137,6 +201,10 @@
 
             .rating span {
                 font-size: 1rem;
+            }
+
+            .screenshots img {
+                width: 120px;
             }
         }
     </style>
@@ -183,12 +251,20 @@
 
         <!-- Screenshots Section -->
         <div class="screenshots">
-            <img src="https://lh3.googleusercontent.com/5pT_6GvasLLogISKhVhtwPgPq2tZr4eTw5vlpd_R8S6xxSnuyUbiMDzmT3gY1adF_A" alt="Screenshot 1">
-            <img src="https://lh3.googleusercontent.com/D9vIuLh2dL5NeeyBVnDPrZ_OyhB75oEpRE6SJPAsS7JrnDC7JYDJkZO2XZskBJIU2tE" alt="Screenshot 2">
-            <img src="https://lh3.googleusercontent.com/MS2TWy3d8vwOJ7IM1patavBx3187ZS_GYzTjVGILXYupyBFYg_6fj-mCQYgr55OOEg" alt="Screenshot 3">
-            <img src="https://lh3.googleusercontent.com/e9DXDJAoU2PWc-G93tWge34ySeD1zOAMgn8_i1mdyKpxcguHCEcET46ShjOGwMaZ-SI" alt="Screenshot 4">
-            <img src="https://lh3.googleusercontent.com/wyrqCFn6i6SdrPefXcwCjeiFdCqa1M16ou72ZQDW8jM7ZPt1kqzQsWp8VOOWm-qLGFrR" alt="Screenshot 5">
-            <img src="https://lh3.googleusercontent.com/YbMLWXgbz3maT4QsMsU0P84mnWKCv2ynmKSI0a9wwCpRWgoWcscvgB6J8FgK29NXxf8" alt="Screenshot 6">
+            <img src="https://lh3.googleusercontent.com/5pT_6GvasLLogISKhVhtwPgPq2tZr4eTw5vlpd_R8S6xxSnuyUbiMDzmT3gY1adF_A" alt="Screenshot 1" onclick="openModal(0)">
+            <img src="https://lh3.googleusercontent.com/D9vIuLh2dL5NeeyBVnDPrZ_OyhB75oEpRE6SJPAsS7JrnDC7JYDJkZO2XZskBJIU2tE" alt="Screenshot 2" onclick="openModal(1)">
+            <img src="https://lh3.googleusercontent.com/MS2TWy3d8vwOJ7IM1patavBx3187ZS_GYzTjVGILXYupyBFYg_6fj-mCQYgr55OOEg" alt="Screenshot 3" onclick="openModal(2)">
+            <img src="https://lh3.googleusercontent.com/e9DXDJAoU2PWc-G93tWge34ySeD1zOAMgn8_i1mdyKpxcguHCEcET46ShjOGwMaZ-SI" alt="Screenshot 4" onclick="openModal(3)">
+            <img src="https://lh3.googleusercontent.com/wyrqCFn6i6SdrPefXcwCjeiFdCqa1M16ou72ZQDW8jM7ZPt1kqzQsWp8VOOWm-qLGFrR" alt="Screenshot 5" onclick="openModal(4)">
+            <img src="https://lh3.googleusercontent.com/YbMLWXgbz3maT4QsMsU0P84mnWKCv2ynmKSI0a9wwCpRWgoWcscvgB6J8FgK29NXxf8" alt="Screenshot 6" onclick="openModal(5)">
+        </div>
+
+        <!-- Modal for displaying larger images -->
+        <div id="modal" class="modal">
+            <span class="close" onclick="closeModal()">×</span>
+            <i class="material-icons left-arrow" onclick="changeImage(-1)">arrow_back</i>
+            <img id="modal-img" src="" alt="Screenshot Preview">
+            <i class="material-icons right-arrow" onclick="changeImage(1)">arrow_forward</i>
         </div>
 
         <!-- Footer Section -->
@@ -196,6 +272,38 @@
             <p>© 2024 Female Fitness. All Rights Reserved. | Design By <a href="https://zarin.solutions" target="_blank">Zarin Solutions Inc.</a></p>
         </footer>
     </div>
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+        let currentImageIndex = 0;
+        const images = [
+            "https://lh3.googleusercontent.com/5pT_6GvasLLogISKhVhtwPgPq2tZr4eTw5vlpd_R8S6xxSnuyUbiMDzmT3gY1adF_A",
+            "https://lh3.googleusercontent.com/D9vIuLh2dL5NeeyBVnDPrZ_OyhB75oEpRE6SJPAsS7JrnDC7JYDJkZO2XZskBJIU2tE",
+            "https://lh3.googleusercontent.com/MS2TWy3d8vwOJ7IM1patavBx3187ZS_GYzTjVGILXYupyBFYg_6fj-mCQYgr55OOEg",
+            "https://lh3.googleusercontent.com/e9DXDJAoU2PWc-G93tWge34ySeD1zOAMgn8_i1mdyKpxcguHCEcET46ShjOGwMaZ-SI",
+            "https://lh3.googleusercontent.com/wyrqCFn6i6SdrPefXcwCjeiFdCqa1M16ou72ZQDW8jM7ZPt1kqzQsWp8VOOWm-qLGFrR",
+            "https://lh3.googleusercontent.com/YbMLWXgbz3maT4QsMsU0P84mnWKCv2ynmKSI0a9wwCpRWgoWcscvgB6J8FgK29NXxf8"
+        ];
+
+        function openModal(index) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = 'flex';
+            modalImg.src = images[index];
+            currentImageIndex = index;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = images[currentImageIndex];
+        }
+    </script>
 
 </body>
 </html>
